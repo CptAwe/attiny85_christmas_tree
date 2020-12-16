@@ -10,4 +10,4 @@ The whole thing is powered from a 9V battery and a Zener diode is used as a crud
 
 ---
 
-[photo](/images/photo.png)
+![photo](./images/photo.jpg)
