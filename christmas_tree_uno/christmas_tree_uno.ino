@@ -1,6 +1,11 @@
-#define red_LEDs_pin     PIN_PB1
-#define yellow_LEDs_pin  PIN_PB0
-#define blue_LEDs_pin    PIN_PB4// <---
+/**
+ * This is a program to test and experiment with a simpler hardware
+ * 
+*/ 
+
+#define red_LEDs_pin     3
+#define yellow_LEDs_pin  5
+#define blue_LEDs_pin    6
 
 int pins[] = {red_LEDs_pin, yellow_LEDs_pin, blue_LEDs_pin};
 
