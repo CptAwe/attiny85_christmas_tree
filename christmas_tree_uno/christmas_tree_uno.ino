@@ -4,7 +4,6 @@
 */ 
 #include "LED.cpp"
 
-
 #define red_LEDs_pin     3
 #define yellow_LEDs_pin  6
 #define blue_LEDs_pin    5
@@ -19,7 +18,6 @@ LED blue(blue_LEDs_pin, 15);
 
 void setup() {
 	randomSeed(analogRead(0));
-	Serial.begin(9600);
 }
 
 void loop() {
