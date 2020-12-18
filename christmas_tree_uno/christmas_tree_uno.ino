@@ -2,31 +2,72 @@
  * This is a program to test and experiment with a simpler hardware
  * 
 */ 
+#include "LED.cpp"
+
 
 #define red_LEDs_pin     3
-#define yellow_LEDs_pin  5
-#define blue_LEDs_pin    6
+#define yellow_LEDs_pin  6
+#define blue_LEDs_pin    5
+#define flash_duration 500
 
-int pins[] = {red_LEDs_pin, yellow_LEDs_pin, blue_LEDs_pin};
+byte led;
+int previous_choice = 0;
 
+LED red(red_LEDs_pin, 100);
+LED yellow(yellow_LEDs_pin, 200);
+LED blue(blue_LEDs_pin, 15);
 
 void setup() {
-	for (byte i=0; i<3; i++){
-		pinMode(pins[i], OUTPUT);
-	}
+	randomSeed(analogRead(0));
+	Serial.begin(9600);
 }
 
 void loop() {
-	for (byte i=0; i<=2; i++){
-		for (int j=0; j<=255; j++) {
-			analogWrite(pins[i], j);
-			delay(10);
+	while (true) {
+		// Avoid doing the same thing twice
+		led = random(7);
+		if (led != previous_choice) {
+			break;
 		}
-		delay(100);
-		for (int j=255; j>=0; j--) {
-			analogWrite(pins[i], j);
-			delay(10);
-		}
-		delay(100);
 	}
+	switch (led) {
+		case 0:
+			red.flash();
+			break;
+		case 1:
+			yellow.flash();
+			break;
+		case 2:
+			blue.flash();
+			break;
+		case 3:
+			red.on();
+			yellow.on();
+			delay(flash_duration);
+			red.off();
+			yellow.off();
+		case 4:
+			yellow.on();
+			blue.on();
+			delay(flash_duration);
+			yellow.off();
+			blue.off();
+		case 5:
+			red.on();
+			blue.on();
+			delay(flash_duration);
+			red.off();
+			blue.off();
+			break;
+		default:
+			red.on();
+			yellow.on();
+			blue.on();
+			delay(flash_duration);
+			red.off();
+			yellow.off();
+			blue.off();
+			break;
+	}
+	previous_choice = led;
 }
