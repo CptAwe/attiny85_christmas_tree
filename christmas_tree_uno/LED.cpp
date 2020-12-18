@@ -8,16 +8,16 @@ class LED {
     private:
         byte _pin;
         byte _m_bright;
-        int _f_del;
+        float _f_del;
         int _f_dur;
         int _flash_dur;
         
     public:
-        LED(byte pin, float max_brightness, float fade_duration = 1000, float flash_duration = 500) {
+        LED(byte pin, int max_brightness, int fade_duration = 1000, int flash_duration = 500) {
             _pin = pin;
             _m_bright = max_brightness;
             _f_dur = fade_duration;
-            _f_del = (max_brightness/fade_duration)*100;
+            _f_del = ((float) fade_duration/(float) max_brightness);
             _flash_dur = flash_duration;
 
             pinMode(_pin, OUTPUT);
@@ -33,7 +33,7 @@ class LED {
                 analogWrite(_pin, bright);
                 delay(_f_del/2);
             }
-            return _f_del;
+            return _f_del*_m_bright;
         }
 
         void flash() {

@@ -23,6 +23,7 @@ void setup() {
 }
 
 void loop() {
+
 	while (true) {
 		// Avoid doing the same thing twice
 		led = random(7);
