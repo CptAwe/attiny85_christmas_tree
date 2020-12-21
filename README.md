@@ -9,5 +9,4 @@ An attiny85 is used as the controller running the [AttinyCore](https://github.co
 The whole thing is powered from a 9V battery and a Zener diode is used as a crude voltage regulator.
 
 ---
-
-![photo](./images/photo.jpg)
+<img alt="photo" src="./images/photo.jpg" height=600>
