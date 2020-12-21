@@ -11,6 +11,7 @@ class LED {
         float _f_del;
         int _f_dur;
         int _flash_dur;
+        bool _state;
         
     public:
         LED(byte pin, int max_brightness, int fade_duration = 1000, int flash_duration = 500) {
@@ -21,6 +22,7 @@ class LED {
             _flash_dur = flash_duration;
 
             pinMode(_pin, OUTPUT);
+            _state = false;
 
         }
 
@@ -34,6 +36,7 @@ class LED {
                 delay(_f_del/2);
             }
             return _f_del*_m_bright;
+            _state = false;
         }
 
         void flash() {
@@ -41,14 +44,29 @@ class LED {
             delay(_flash_dur);
             analogWrite(_pin, 0);
             // delay(_flash_dur/2);
+            _state = false;
         }
 
         void on() {
             analogWrite(_pin, _m_bright);
+            _state = true;
         }
 
         void off() {
             analogWrite(_pin, 0);
+            _state = false;
+        }
+
+        void flip() {
+            if (_state) {
+                analogWrite(_pin, 0);
+            } else {
+                analogWrite(_pin, _m_bright);
+            }
+        }
+
+        bool state() {
+            return _state;
         }
 
 };

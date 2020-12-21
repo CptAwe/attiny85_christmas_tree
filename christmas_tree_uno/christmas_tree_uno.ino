@@ -4,69 +4,39 @@
 */ 
 #include "LED.cpp"
 
-#define red_LEDs_pin     3
+#define red_LEDs_pin     5
 #define yellow_LEDs_pin  6
-#define blue_LEDs_pin    5
-#define flash_duration 500
-
-byte led;
-int previous_choice = 0;
+#define blue_LEDs_pin    3
 
 LED red(red_LEDs_pin, 100);
 LED yellow(yellow_LEDs_pin, 200);
 LED blue(blue_LEDs_pin, 15);
 
+/**
+ * Binary Counter
+ * 
+ * msb [red - yellow - blue] lsb
+*/
+
+LED leds[] = {red, yellow, blue};
+byte leds_num = sizeof(leds)/sizeof(LED);
+
 void setup() {
-	randomSeed(analogRead(0));
 }
 
 void loop() {
-
-	while (true) {
-		// Avoid doing the same thing twice
-		led = random(7);
-		if (led != previous_choice) {
-			break;
+	for (int i=0; i<leds_num; i++){
+		if (leds[i].state()) {
+			if (i<leds_num){
+				leds[i+1].flip();
+			}
+		} else {
+			leds[i].flip();
 		}
+		delay(700);
 	}
-	switch (led) {
-		case 0:
-			red.flash();
-			break;
-		case 1:
-			yellow.flash();
-			break;
-		case 2:
-			blue.flash();
-			break;
-		case 3:
-			red.on();
-			yellow.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-		case 4:
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			yellow.off();
-			blue.off();
-		case 5:
-			red.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			blue.off();
-			break;
-		default:
-			red.on();
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-			blue.off();
-			break;
+	for (int i=0; i<leds_num; i++){
+		leds[i].off();
 	}
-	previous_choice = led;
+	delay(1000);
 }
