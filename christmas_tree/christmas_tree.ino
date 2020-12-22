@@ -5,8 +5,8 @@
 #include "LED.cpp"
 
 #define red_LEDs_pin     PIN_PB4
-#define yellow_LEDs_pin  PIN_PB1
-#define blue_LEDs_pin    PIN_PB0
+#define yellow_LEDs_pin  PIN_PB0
+#define blue_LEDs_pin    PIN_PB1
 
 byte led;
 int previous_choice = 0;
