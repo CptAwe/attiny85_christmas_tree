@@ -7,66 +7,51 @@
 #define red_LEDs_pin     3
 #define yellow_LEDs_pin  6
 #define blue_LEDs_pin    5
-#define flash_duration 500
 
-byte led;
-int previous_choice = 0;
+LED red(red_LEDs_pin, 100, 2000);
+LED yellow(yellow_LEDs_pin, 200, 2000);
+LED blue(blue_LEDs_pin, 15, 2000);
+LED leds[] = {red, yellow, blue};
+byte led_num = sizeof(leds)/sizeof(LED);
 
-LED red(red_LEDs_pin, 100);
-LED yellow(yellow_LEDs_pin, 200);
-LED blue(blue_LEDs_pin, 15);
+/**
+ * The tree is calmly fading in and out each LED
+ * but will randomly start flashing them for a bit
+ * before reverting back to fading them
+ * 
+*/
+
+byte num_of_flahses = 3;// it will be locked to flash for this many loops minimum
+
+bool fade_or_flash = true;// true -> fade | false -> flash
+byte previous_led = led_num+1;
+byte current_flash = 1;
 
 void setup() {
 	randomSeed(analogRead(0));
 }
 
 void loop() {
-
-	while (true) {
-		// Avoid doing the same thing twice
-		led = random(7);
-		if (led != previous_choice) {
-			break;
+	if (random(10) > 7) {
+		current_flash = 1;
+		fade_or_flash = false;// 30% probability (not true but who cares) to flash
+	} else {
+		if (current_flash > num_of_flahses){
+			fade_or_flash = true;
 		}
 	}
-	switch (led) {
-		case 0:
-			red.flash();
-			break;
-		case 1:
-			yellow.flash();
-			break;
-		case 2:
-			blue.flash();
-			break;
-		case 3:
-			red.on();
-			yellow.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-		case 4:
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			yellow.off();
-			blue.off();
-		case 5:
-			red.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			blue.off();
-			break;
-		default:
-			red.on();
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-			blue.off();
-			break;
+
+	byte current_led;
+	do {
+		current_led = random(3);
+	} while (current_led == previous_led);
+	previous_led = current_led;
+	
+	if (fade_or_flash){
+		leds[current_led].fade();
+	} else {
+		leds[current_led].flash();
+		current_flash++;
 	}
-	previous_choice = led;
+
 }
