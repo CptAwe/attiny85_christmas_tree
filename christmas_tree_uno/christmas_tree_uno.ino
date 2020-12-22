@@ -25,16 +25,20 @@ void setup() {
 }
 
 void loop() {
-	for (int i=0; i<leds_num; i++){
-		if (leds[i].state()) {
-			if (i<leds_num){
-				leds[i+1].flip();
-			}
+	byte i = 0;
+	while (i < leds_num) {
+		if (leds[i].state()){
+			leds[i].off();
+			i++;
+			continue;
 		} else {
-			leds[i].flip();
+			leds[i].on();
+			i=0;
 		}
-		delay(700);
+		delay(1000);
 	}
+	
+	delay(1000);
 	for (int i=0; i<leds_num; i++){
 		leds[i].off();
 	}
