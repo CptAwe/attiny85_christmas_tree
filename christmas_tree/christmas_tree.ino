@@ -18,96 +18,75 @@ LED leds[] = {red, yellow, blue};
 byte led_num = sizeof(leds)/sizeof(LED);
 
 /**
- * The tree is calmly fading in and out each LED
- * but will randomly start flashing them for a bit
- * before reverting back to fading them
+ * This tree sends a message in morse code
  * 
 */
 
-byte num_of_flahses = 3;// it will be locked to flash for this many loops minimum
-byte maximum_num_of_fades = 7;// it will be fade for maximum this many loops
+/**
+	".-~~", // A
+	"-...", // B
+	"-.-.", // C
+	"-..~", // D
+	".~~~", // E
+	"..-.", // F
+	"--.~", // G
+	"....", // H
+	"..~~", // I
+	".---", // J
+	"-.-~", // K
+	".-..", // L
+	"--~~", // M
+	"-.~~", // N
+	"---~", // O
+	".--.", // P
+	"--.-", // Q
+	".-.~", // R
+	"...~", // S
+	"-~~~", // T
+	"..-~", // U
+	"...-", // V
+	".--~", // W
+	"-..-", // X
+	"-.--", // Y
+	"--.."  // Z
+*/
 
-bool fade_or_flash = true;// true -> fade | false -> flash
-byte previous_led_fade = led_num+1;
-byte previous_led_flash = led_num+1;
-byte current_flash = 1;
-byte current_fade = 1;
+char message[] = ".--..-...-.. -..----.. .--..--..---...----..";// Well Done Panagioti
+byte message_len = sizeof(message)/sizeof(char) - 1;// keep the EOL character out
+
+byte current_led;
+byte previous_led = led_num;
 
 void setup() {
 	randomSeed(analogRead(0));
 }
 
 void loop() {
-	if (random(10) > 8 || current_fade >= maximum_num_of_fades) {
-		// flash
-		current_flash = 1;
-		current_fade = 1;
-		fade_or_flash = false;// 20% probability (not true but who cares) to flash
-	} else {
-		// fade
-		if (current_flash > num_of_flahses){
-			fade_or_flash = true;
-		}
-	}
-	
-	if (fade_or_flash){
-		// fade
-
-		byte current_led;
-		do {
+	for (byte i=0; i<message_len; i++) {
+		do
+		{
 			current_led = random(3);
-		} while (current_led == previous_led_fade);
-		previous_led_fade = current_led;
-		leds[current_led].fade();
-
-		current_fade++;
-
-	} else {
-		// flash
-
-		byte current_led;
-		do {
-			current_led = random(7);
-		} while (current_led == previous_led_flash);
-		previous_led_flash = current_led;
+		} while (current_led == previous_led);
 		
-		switch (current_led) {
-		case 0:
-		case 1:
-		case 2:
+		if (message[i] == '.') {
 			leds[current_led].flash();
-			break;
-		case 3:
-			leds[0].on();
-			leds[1].on();
-			delay(flash_duration);
-			leds[0].off();
-			leds[1].off();
-		case 4:
-			leds[1].on();
-			leds[2].on();
-			delay(flash_duration);
-			leds[1].off();
-			leds[2].off();
-		case 5:
-			leds[0].on();
-			leds[2].on();
-			delay(flash_duration);
-			leds[0].off();
-			leds[2].off();
-		case 6:
-			leds[0].on();
-			leds[1].on();
-			leds[2].on();
-			delay(flash_duration);
-			leds[0].off();
-			leds[1].off();
-			leds[2].off();
-		default:
-			break;
+		} else if ((message[i] == '-')) {
+			leds[current_led].fade();
 		}
-		
-		current_flash++;
+		delay(1000);
+		previous_led = current_led;
 	}
 
+	for (byte i=0; i<3; i++) {
+		red.on();
+		yellow.on();
+		blue.on();
+		delay(flash_duration);
+		red.off();
+		yellow.off();
+		blue.off();
+		delay(flash_duration);
+	}
+
+	delay(2000);
 }
