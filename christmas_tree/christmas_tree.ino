@@ -22,51 +22,5 @@ void setup() {
 
 void loop() {
 
-	while (true) {
-		// Avoid doing the same thing twice
-		led = random(7);
-		if (led != previous_choice) {
-			break;
-		}
-	}
-	switch (led) {
-		case 0:
-			red.flash();
-			break;
-		case 1:
-			yellow.flash();
-			break;
-		case 2:
-			blue.flash();
-			break;
-		case 3:
-			red.on();
-			yellow.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-		case 4:
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			yellow.off();
-			blue.off();
-		case 5:
-			red.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			blue.off();
-			break;
-		default:
-			red.on();
-			yellow.on();
-			blue.on();
-			delay(flash_duration);
-			red.off();
-			yellow.off();
-			blue.off();
-			break;
-	}
-	previous_choice = led;
+	
 }
